@@ -4,9 +4,13 @@ function print_my_input() {
   echo 'Your input: ' $1
 }
 
-# download from youtube 
-# based on a playlist ID (see in the url list\=ID) $1 
-# and the start number of the playlist $2 
+function gitcheckoutall() {
+    git diff --name-only --diff-filter=U | sed 's/^/"/;s/$/"/' | xargs git checkout --$1
+}
+
+# download from youtube
+# based on a playlist ID (see in the url list\=ID) $1
+# and the start number of the playlist $2
 function update_my_playlists() {
   echo 'Code it first you fool '
   mkdir $1;
@@ -51,7 +55,7 @@ function convert2gif() {
 
 
 function launchandco(){
-  # will launch and connect with jkconnect to a gcp instance 
+  # will launch and connect with jkconnect to a gcp instance
   instance=${1:-broadproject2}
   zone=${2:-us-east1-b}
   name=${3:-jkobject}
@@ -83,8 +87,8 @@ function create_dx_urls_from(){
   # given a dx folder url $1, will create a list of downloadable file links from the files $2 within it
   dx ls $1$2 >list.txt
   # getting the urls
-  for i in $(cat list.txt); do 
-    dx make_download_url --duration "1w" "$1$i" >> urls.txt; 
+  for i in $(cat list.txt); do
+    dx make_download_url --duration "1w" "$1$i" >> urls.txt;
   done;
 }
 
@@ -92,10 +96,10 @@ function jkconnect(){
   #connects to the server by also connecting rsublime and more
   #fswatch -o . | while read f; do rsync -zrq --max-size=200m  ./ $1:current; done & \
   ssh -L 8157:127.0.0.1:8890 \
-  -R 52698:localhost:52698 $1 
+  -R 52698:localhost:52698 $1
 }
 
-function upload_urls_to_gcp(){ 
+function upload_urls_to_gcp(){
   # args:
   #   1 filepath with list of server filepath to curl
   #   2 gs://bucket/
@@ -111,7 +115,7 @@ function upload_urls_to_gcp(){
 }
 
 
-function gitpush(){ 
+function gitpush(){
   # add.commitpush with 1 being commit message
   git add . && git commit -m $1 && git push
 }
@@ -172,7 +176,7 @@ function extract {
     do
       if [ -f "$n" ] ; then
           case "${n%,}" in
-            *.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar) 
+            *.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar)
                          tar xvf "$n"       ;;
             *.lzma)      unlzma ./"$n"      ;;
             *.bz2)       bunzip2 ./"$n"     ;;
@@ -239,5 +243,5 @@ ssd () { # gets my ssd storage left (only in linux)
 remove_port_rsub () {
   username=${1:-jeremie}
   ps -u username
-  # kill # of first process named sshd 
-}  
+  # kill # of first process named sshd
+}
