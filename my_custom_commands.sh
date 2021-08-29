@@ -24,6 +24,10 @@ function update_my_playlists() {
   rm *.jpg
 }
 
+removeAdobeText(){
+  sudo rm -r ~/Library/Application\ Support/Adobe/AdobeGCCClient;
+  sudo rm -r /Library/Application\ Support/Adobe/AdobeGCClient;
+}
 
 cpp-run() {
     echo "Compiling file..."
@@ -244,4 +248,17 @@ remove_port_rsub () {
   username=${1:-jeremie}
   ps -u username
   # kill # of first process named sshd
+}
+
+col () { column -t -s$‘\t’ $1 | less -S; }
+
+gless() { gsutil -u broad-firecloud-ccle cat $1 | less -S; }
+
+gzless() { gsutil -u broad-firecloud-ccle cat $1 | zless -S; }
+
+ssh_node_maybe_start () {
+        if [[ ! $(checknode | grep “status: RUNNING”) ]]; then
+                startnode
+        fi
+        sshnode_
 }
